@@ -29,7 +29,12 @@ export async function searchImages({ page = 0, limit = 6, breedId = '', mimeType
   params.set('limit', String(limit));
   params.set('page', String(page));
   params.set('order', 'Desc');
-  if (breedId) params.set('breed_ids', breedId);
+  if (breedId) {
+    params.set('breed_ids', breedId)
+    params.set('has_breeds', '1')    // sólo imágenes que llevan raza
+  } else {
+    params.set('has_breeds', '1')    // opcional: aplica también en “Todas”
+  }
   if (mimeTypes.length) params.set('mime_types', mimeTypes.join(','));
   const url = `${API_BASE}/images/search?${params.toString()}`;
 

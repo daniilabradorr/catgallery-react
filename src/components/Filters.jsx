@@ -6,7 +6,7 @@ export default function Filters({ value, onChange }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  //uso el sue effect para cargar razas al montar
+  // cargar razas al montar
   useEffect(() => {
     let cancelled = false
     ;(async () => {
@@ -25,7 +25,10 @@ export default function Filters({ value, onChange }) {
   }, [])
 
   function handleBreed(e) {
-    onChange({ ...value, breedId: e.target.value })
+    const id = e.target.value
+    const sel = breeds.find(b => b.id === id)
+    // además de breedId, guardamos breedName para usarlo como fallback en las tarjetas
+    onChange({ ...value, breedId: id, breedName: sel?.name || '' })
   }
 
   function handleMime(e) {

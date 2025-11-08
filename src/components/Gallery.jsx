@@ -4,10 +4,10 @@ import CatCard from './CatCard.jsx'
 import useLocalStorage from '../hooks/useLocalStorage.js'
 import { searchImages } from '../services/catApi.js'
 
-const PAGE_SIZE = 6  // baja a 6 (o 3 si sigues viendo 429)
+const PAGE_SIZE = 6  // baja a 3 si sigues viendo 429
 
 export default function Gallery() {
-  const [filters, setFilters] = useState({ breedId: '', mimeTypes: [] })
+  const [filters, setFilters] = useState({ breedId: '', breedName: '', mimeTypes: [] })
   const [images, setImages] = useState([])
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -24,7 +24,7 @@ export default function Gallery() {
         limit: PAGE_SIZE,
         breedId: filters.breedId,
         mimeTypes: filters.mimeTypes,
-      })
+      }) // <- ¡sin selectedBreedName aquí!
       setImages(prev => (nextPage === 0 ? data : [...prev, ...data]))
       setPage(nextPage + 1)
     } catch (e) {
@@ -62,6 +62,7 @@ export default function Gallery() {
             item={img}
             isFav={favSet.has(img.id)}
             onToggleFav={toggleFav}
+            selectedBreedName={filters.breedName}  // <- aquí sí pasamos el nombre
           />
         ))}
       </div>
